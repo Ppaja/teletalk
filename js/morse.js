@@ -3,7 +3,7 @@ let morseCode = "";
       let dashSound = new Audio("audio/dash.mp3");
       let morseDevice = document.querySelector(".morse-device");
       let longPressThreshold = 150;
-      let pauseThreshold = 300;
+      let pauseThreshold = 600;
 
       let pressing = false;
       let pressingStartTime;

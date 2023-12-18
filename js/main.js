@@ -224,13 +224,14 @@ function showTutorial() {
   showButtons: ['next', 'previous', 'close'],
   steps: [
   { popover: { title: 'TeleTalk', description: 'This is a short tutorial on how to use Teletalk.' } },
-    { element: '#chat-main', popover: { title: 'Chat', description: 'This is the chat window. Selfexplanatory.', side: "bottom", align: 'start' }},
-    { element: '#morse-code-container', popover: { title: 'How to write', description: 'Use the morse device to write whatever you want. Click on the "i" symbol to learn more about how the morse code system works. ', side: "bottom", align: 'start' }},
+    { element: '#morse-code-container', popover: { title: 'How to write', description: 'Use the morse device to write whatever you want. Tip shortly to create a dot (.) or hold it for a dash (-). Click on the "i" symbol to learn more about how the morse code system works. ', side: "bottom", align: 'start' }},
     { element: '#clear-it', popover: { title: 'Clear', description: 'Here you can clear the current input if you misspelled something.', side: "top", align: 'start' }},
     { element: '#translation-container', popover: { title: 'Translation', description: 'Here you can see in realtime what your morse code translates to.', side: "top", align: 'start' }},
     { element: '#send-button', popover: { title: 'Send message', description: 'Here you can send your message. ', side: "top", align: 'start' }},
-    { element: '#menuToggler', popover: { title: 'Menu', description: 'Klick here to open 2 Buttons, one for settings and one with a cheatsheet for morse codes.', side: "top", align: 'start' }},
+    { element: '#menuToggler', popover: { title: 'Menu', description: 'Klick here to open the settings. There is also a cheat sheet for morse codes and the settings for the morse device.', side: "top", align: 'start' }},
     { element: '#show-username', popover: { title: 'LogOut', description: 'By clicking here you can log out.', side: "top", align: 'start' }},
+    { element: '#add-button', popover: { title: 'private chat', description: 'Click the + button and enter the name of the user you want to chat with.', side: "top", align: 'start' }},
+    { element: '#menu-button', popover: { title: 'chat selection', description: 'Click here to see all your chats and navigate through them.', side: "top", align: 'start' }},
   ]
 });
       

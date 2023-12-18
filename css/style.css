@@ -1,6 +1,4 @@
-
-
-  th {
+th {
     font-size: 20px;
   }
 
@@ -88,14 +86,14 @@
   .morse-device {
     width: 150px;
     height: 92px;
-    background-image: url("img/morse_device_off.png");
+    background-image: url("../img/morse_device_off.png");
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
   }
 
   .morse-device-on {
-    background-image: url("img/morse_device_on.png");
+    background-image: url("../img/morse_device_on.png");
   }
 
   .info-field {
@@ -244,11 +242,10 @@
   #settings-button {
     writing-mode: vertical-rl;
     text-orientation: upright;
-    
     background-color: #333333;
       color: white;
-    
     z-index: 51111555;
+    border: 1px solid white;
   }
 
   #settings-main-container {
@@ -283,6 +280,7 @@
       color: white;
     cursor: pointer;
     z-index: 11;
+    border: 1px solid white;
   }
 
   .table {

@@ -427,7 +427,7 @@
 
     <!-- my scripts -->
     <script src="js/morse.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/main2.js"></script>
     <script>
       const menuBtn = document.getElementById("menu-button");
       const menuContainer = document.getElementById("menu-container");
@@ -487,7 +487,7 @@
       console.log("Nutzer existiert");
       alert("Chat added");
       
-      let bothUsers = currentUser + username;
+
 
       // Pfad zum Chats-Ordner des gefundenen Benutzers unter dem "Users"-Ordner
       const foundUserUsername = users[foundUserKey].username;
@@ -495,31 +495,26 @@
 
 
       // Füge den aktuellen Benutzer zum Chats-Ordner des gefundenen Benutzers hinzu
-      firebase.database().ref(foundUserChatsPath).child(currentUser).set(bothUsers);
+      firebase.database().ref(foundUserChatsPath).child(currentUser).set(true);
 
       // Pfad zum Chats-Ordner des aktuellen Benutzers unter dem "Users"-Ordner
       const currentUserChatsPath = `Users/Chats/${currentUser}`;
 
       console.log(currentUser);
 
-      firebase.database().ref(currentUserChatsPath).child(username).set(bothUsers);
+      firebase.database().ref(currentUserChatsPath).child(username).set(true);
 
 
       // Hier kannst du den Code hinzufügen, um den Chat mit dem Benutzer zu starten
-      
+      loadChats();
 
-      
+      let bothUsers = currentUser + username;
       // console.log(bothUsers);
-      const newChatFolder = `AllChats/${bothUsers}/Count`;
+      const newChatFolder = `AllChats/${bothUsers}`;
 
       firebase.database().ref(newChatFolder).set({
         ChatCount: 0
-
-      // firebase.database().ref(newChatFolder).set({
-      //   1: "Der Chat beginnt"
 });
-loadChats();
-window.location.href = "main.html";
       
     } else {
       console.log("Nutzer existiert nicht");
@@ -566,7 +561,6 @@ function loadChats() {
           menuContainer.appendChild(chatSelection);
         }
       }
-      
     });
 }
 

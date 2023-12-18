@@ -102,7 +102,7 @@ var firebaseConfig = {
 
   async function loadData() {
     // Pfad zum Datenpunkt 'AdminCarmi' in der Datenbank
-    const dataPath = 'Users/Chats/Admin/Carmi';
+    const dataPath = `Users/Chats/${chatPartner}/${currentUser}`;
   
     try {
       const snapshot = await database.ref(dataPath).once('value');
@@ -222,7 +222,7 @@ var firebaseConfig = {
   loadData();
   
 
-// console.log(dmName);
+console.log(dmName);
   
 
   

@@ -1,0 +1,448 @@
+body {
+    font-family: Arial, cursive;
+    margin: 0;
+    padding: 0;
+    background-color: #333333;
+    color: white;
+    overflow-y: hidden;
+    max-width: 100vw;
+  }
+
+  main {
+    height: 100%;
+  }
+
+  .greendot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
+    margin-right: 5px; /* oder passen Sie den Abstand nach Bedarf an */
+  }
+
+  .headertext {
+    display: flex;
+    align-items: center;
+  }
+
+  #show-username p {
+    margin: 0; /* Stellt sicher, dass der Text keine Standardmargen hat */
+  }
+
+  .topright {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin-top: 5%;
+    margin-right: 5%;
+  }
+
+  footer {
+    text-align: center;
+  }
+
+  input {
+    background-color: #333333;
+    color: white;
+  }
+
+  p {
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 5%;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+
+  #setting-over-container {
+    /* display: none; */
+  }
+
+  .chat-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 10px 20px 20px;
+    overflow-y: scroll;
+  }
+
+  .message {
+    display: flex;
+    flex-direction: column;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    max-width: 70%;
+    position: relative;
+    color: black;
+    min-width: 50px;
+  }
+
+  .sent {
+    background-color: #dcf8c6;
+    align-self: flex-end;
+    text-align: right;
+  }
+
+  .received {
+    background-color: #eaeaea;
+    align-self: flex-start;
+  }
+
+  .timestamp {
+    font-size: 0.8em;
+    color: #777;
+    align-self: flex-end;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .sender-name {
+    font-weight: bold;
+  }
+
+  .chat-box {
+    width: 100vw;
+    height: 85vh;
+    background-color: #333333;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    background-color: #075e54;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    height: 40px;
+  }
+
+  .chat-footer {
+    background-color: #333333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .input-message {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .send-button {
+    background-color: #25d366;
+    color: #000000;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .lefttop-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    
+    background-color: transparent;
+    
+    cursor: pointer;
+    display: flex;
+    
+  }
+
+  .menu {
+    
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 20px;
+    
+  }
+
+  #menu-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(187, 187, 187, 0.9);
+    z-index: 999;
+    
+  }
+
+  #closemenu-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    background-color: #333333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+  }
+
+  
+
+  
+
+  #menu-add-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    background-color: rgb(39, 187, 20);
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+  }
+
+  .chat-header {
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .chat-selection {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .chat-selection a {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+  
+  .chat-selection a:hover {
+    color: #ff6600;
+  }
+
+  .menu-buttons {
+    position: fixed;
+    top: 50px; /* Anpassen, um den gewünschten Abstand vom oberen Rand zu erhalten */
+    left: 50px; /* Anpassen, um den gewünschten Abstand vom linken Rand zu erhalten */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2; /* Setze den Z-Index auf einen Wert größer als den Z-Index der Chat-Nachrichten */
+    display: none;
+    
+  }
+
+  .menu-button i {
+    color: #ffffff; /* Ändert die Farbe des Icons im Button */
+}
+
+  .menu-buttons.show {
+    /* opacity: 1; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    position: absolute;
+    top: 7%;
+    left: 1%;
+  }
+
+  
+
+  .menu-button {
+    width: 50px;
+    height: 50px;
+    background-color: #00ff5e;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 8333;
+  }
+
+  .topmiddle-container {
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+  }
+
+  .push-button {
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .push-button:hover {
+    color: gray;
+  }
+
+  
+
+  .menu-button:hover {
+    transform: scale(1.1);
+  }
+
+  .close {
+    content: "x";
+    font-size: 50px;
+    color: #fff;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+  }
+
+  .menu i {
+    font-size: 34px; /* Hier die gewünschte Größe eintragen */
+  }
+
+  #logout-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #closelogoutbtn {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #25d366;
+    border: none;
+    border-radius: 5px;
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    cursor: pointer;
+    height: auto;
+    width: 40%;
+  }
+
+  #logout-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    height: 10%;
+    width: 50%;
+  }
+
+  
+  #add-user-container {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffffc9;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999999999;
+    width: 70%;
+    display: none;
+  }
+  
+  #add-user-container label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+  }
+  
+  #add-name {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: gray;
+  }
+
+  #add-name::placeholder {
+    color: rgba(255, 255, 255, 0.637);
+  }
+  
+  
+  #add-user-button {
+    background-color: #25d366;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  #add-user-button:hover {
+    background-color: #128c7e;
+  }
+  
+  #closeadd-btn {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: #272727;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 34px;
+  }

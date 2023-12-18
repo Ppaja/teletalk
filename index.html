@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #333333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .animation-container {
+      text-align: center;
+    }
+
+    .logo {
+      max-width: 250px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards, pulse 2s 1s infinite forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .question-container {
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 3s ease-in-out forwards;
+    }
+
+    .question-container2 {
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 0s ease-in-out forwards;
+    }
+
+    .question-container3 {
+      display: flex;
+      flex-direction: column;
+      margin: 405px;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 1s 0s ease-in-out forwards;
+    }
+
+    .question-text {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .username-input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 200px;
+      font-size: 16px;
+    }
+
+    .submit-button {
+      margin-top: 10px;
+      background-color: #25d366;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .submit-button2 {
+      margin-top: 10px;
+      background-color: #25d366;
+      color: #fff;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #128c7e;
+    }
+
+   #question-container2 {
+      display: none;
+    }
+
+    #login-container {
+      display: none;
+    }
+
+    .here {
+      color: #25d366;
+      cursor: pointer;
+
+    }
+
+    .username-input3 {
+      width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #25d366;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.login-btn:hover {
+  background-color: rgb(9, 39, 20);
+}
+
+@media (max-width: 600px) {
+  .username-input3 {
+      width: 200px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-btn {
+  width: 200px;
+  background-color: #25d366;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+}
+
+  </style>
+</head>
+<body>
+
+    <div class="animation-container">
+        <img id="logo" src="logo.png" alt="Logo" class="logo">
+        <div id="question-container" class="question-container">
+          <div class="question-text">Choose your username:</div>
+          <input type="text" class="username-input" id="usernameInput" placeholder="Enter your username">
+          <button class="submit-button" onclick="submitUsername()">Submit</button>
+          <p>or login <span class="here" onclick="showLogIn()">here</span></p>
+        </div>
+
+        <div id="question-container2" class="question-container2">
+            <div class="question-text">Choose your password:</div>
+            <input type="password" class="username-input" id="passwordInput" placeholder="Enter your password">
+            <button class="submit-button2" onclick="submitPassword()">Submit</button>
+          </div>
+          
+          <div id="login-container" class="question-container3">
+            <div class="question-text">Login:</div>
+            <input type="text" class="username-input3" id="usernameLogin" placeholder="Enter your username">
+            <input type="password" class="username-input3" id="passwordLogin" placeholder="Enter your password">
+            <button id="login-btn" class="login-btn" onclick="login()">Login</button>
+          </div>
+      </div>
+      
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    // Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyA-tilEQgywgU_SUrOFA8fO6c-uxlzv86o",
+  authDomain: "teletalk-917a9.firebaseapp.com",
+  databaseURL: "https://teletalk-917a9-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "teletalk-917a9",
+  storageBucket: "teletalk-917a9.appspot.com",
+  messagingSenderId: "633282111310",
+  appId: "1:633282111310:web:ada56cfd439ba912cd601f"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const questionContainer = document.getElementById('question-container');
+    const questionContainer2 = document.getElementById('question-container2');
+    const loginContainer = document.getElementById('login-container');
+    const logo = document.getElementById('logo');
+
+    // Firebase Database reference
+    var database = firebase.database();
+
+    // Firebase Auth reference
+    function submitUsername() {
+  var username = document.getElementById('usernameInput').value;
+
+  // Überprüfen, ob der Benutzername bereits existiert
+  checkUsernameExistence(username, function(exists) {
+    if (!exists) {
+      // Benutzername ist einzigartig, setzen Sie ihn und zeigen Sie die nächste Frage an
+      localStorage.setItem('username', username);
+      showNextQuestion();
+    } else {
+      // Benutzername existiert bereits, zeige einen Alert
+      alert('Dieser Benutzername existiert bereits. Bitte wählen Sie einen anderen.');
+    }
+  });
+}
+
+// Funktion zur Überprüfung der Benutzername-Existenz in der Firebase-Datenbank
+function checkUsernameExistence(username, callback) {
+  // Annahme: Ihre Firebase-Datenbank-Referenz ist als firebaseRef definiert
+  var firebaseRef = firebase.database().ref('Users');
+
+  // Überprüfen, ob der Benutzername bereits vorhanden ist
+  firebaseRef.orderByChild('username').equalTo(username).once('value', function(snapshot) {
+    callback(snapshot.exists());
+  });
+}
+
+
+    function showNextQuestion() {
+      questionContainer.style.display = 'none';
+      questionContainer2.style.display = 'block';
+    }
+
+    function submitPassword() {
+      var password = document.getElementById('passwordInput').value;
+      
+      // Überprüfen, ob das Passwort leer ist
+  if (password.trim() === '') {
+    // Passwort ist leer, zeige einen Alert
+    alert('Das Passwort darf nicht leer sein. Bitte geben Sie ein gültiges Passwort ein.');
+    return; // Beende die Funktion, um weitere Verarbeitung zu verhindern
+  }
+
+
+      console.log("Selected password:", password);
+      createUserInFirebase();
+    }
+
+    function createUserInFirebase() {
+      var username = localStorage.getItem('username');
+      var password = document.getElementById('passwordInput').value;
+
+      // Erstelle einen eindeutigen Schlüssel für den Benutzer
+      var userId = database.ref().child('Users').push().key;
+
+      // Erstelle ein Datenobjekt für den neuen Benutzer
+      var userData = {
+        username: username,
+        password: password
+        // Füge weitere Benutzerdaten hinzu, falls erforderlich
+      };
+
+      // Aktualisiere die Datenbank mit den Benutzerdaten
+      var updates = {};
+      updates['/Users/' + userId] = userData;
+
+      return database.ref().update(updates)
+        .then(function() {
+          console.log("User created in Firebase Database");
+          redirect();
+        })
+        .catch(function(error) {
+          console.error("Error creating user in Firebase Database:", error.message);
+        });
+    }
+
+    function redirect() {
+      window.location.href = 'main.html';
+    }
+
+    setTimeout(function() {
+      // Stoppe die Animation des Logos
+      logo.style.animation = 'none';
+      logo.style.opacity = '1';
+    }, 3000);
+    
+
+    function showLogIn() {
+      questionContainer.style.display = 'none';
+      loginContainer.style.display = 'flex';
+    }
+
+    const usernameInput = document.getElementById('usernameLogin');
+    const passwordInput = document.getElementById('passwordLogin');
+    const loginBtn = document.getElementById('login-btn');
+
+    function login() {
+      const username = usernameInput.value;
+  const password = passwordInput.value;
+
+  // Überprüfen, ob der Benutzername und das Passwort nicht leer sind
+  if (username.trim() === '' || password.trim() === '') {
+    alert('Bitte geben Sie einen Benutzernamen und ein Passwort ein.');
+    return;
+  }
+
+  // Referenz zur Firebase Realtime Database erstellen
+  const usersRef = firebase.database().ref('Users');
+
+  // Überprüfen, ob der Benutzer existiert und das Passwort übereinstimmt
+  usersRef.orderByChild('username').equalTo(username).once('value', function(snapshot) {
+    if (snapshot.exists()) {
+      const userData = snapshot.val();
+      const userId = Object.keys(userData)[0]; // Annahme: Eindeutige Benutzer-ID wird verwendet
+
+      if (userData[userId].password === password) {
+        // Erfolgreicher Login
+        console.log('Erfolgreich eingeloggt:', username);
+        localStorage.setItem('username', username);
+        redirect();
+        
+
+        // Fügen Sie hier den Code hinzu, den Sie nach dem erfolgreichen Login ausführen möchten
+        // Zum Beispiel: Umleitung zu einer anderen Seite
+      } else {
+        // Passwort ist falsch
+        alert('Falsches Passwort. Bitte überprüfen Sie Ihre Eingaben.');
+      }
+    } else {
+      // Benutzer existiert nicht
+      alert('Benutzer existiert nicht. Bitte überprüfen Sie Ihren Benutzernamen.');
+    }
+  });
+    }
+      
+ 
+  </script>
+</body>
+</html>

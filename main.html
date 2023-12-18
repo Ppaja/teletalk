@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TeleTalk Chat</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      integrity="sha384-..."
+      crossorigin="anonymous"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+
+    <style>
+      html,
+      body {
+        font-family: Arial, cursive;
+        margin: 0;
+        padding: 0;
+        background-color: #333333;
+        color: white;
+        overflow-y: hidden;
+        max-width: 100vw;
+      }
+
+      main {
+        height: 100%;
+      }
+
+      .greendot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: green;
+        margin-right: 5px; /* oder passen Sie den Abstand nach Bedarf an */
+      }
+
+      .headertext {
+        display: flex;
+        align-items: center;
+      }
+
+      #show-username p {
+        margin: 0; /* Stellt sicher, dass der Text keine Standardmargen hat */
+      }
+
+      .topright {
+        position: fixed;
+        top: 0;
+        right: 0;
+        margin-top: 5%;
+        margin-right: 5%;
+      }
+
+      footer {
+        text-align: center;
+      }
+
+      input {
+        background-color: #333333;
+        color: white;
+      }
+
+      p {
+        display: block;
+        margin-block-start: 0;
+        margin-block-end: 5%;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+      }
+
+      #setting-over-container {
+        /* display: none; */
+      }
+
+      .chat-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 10px 20px 20px;
+        overflow-y: scroll;
+      }
+
+      .message {
+        display: flex;
+        flex-direction: column;
+        margin: 8px;
+        padding: 8px;
+        border-radius: 8px;
+        max-width: 70%;
+        position: relative;
+        color: black;
+        min-width: 50px;
+      }
+
+      .sent {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+        text-align: right;
+      }
+
+      .received {
+        background-color: #eaeaea;
+        align-self: flex-start;
+      }
+
+      .timestamp {
+        font-size: 0.8em;
+        color: #777;
+        align-self: flex-end;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+
+      .sender-name {
+        font-weight: bold;
+      }
+
+      .chat-box {
+        width: 100vw;
+        height: 85vh;
+        background-color: #333333;
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-header {
+        background-color: #075e54;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        height: 40px;
+      }
+
+      .chat-footer {
+        background-color: #333333;
+        color: white;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .input-message {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      .send-button {
+        background-color: #25d366;
+        color: #000000;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .menu {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        width: 30px;
+        height: 30px;
+        background-color: #075e54;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .menu-buttons {
+        position: fixed;
+        top: 50px; /* Anpassen, um den gewünschten Abstand vom oberen Rand zu erhalten */
+        left: 50px; /* Anpassen, um den gewünschten Abstand vom linken Rand zu erhalten */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 2; /* Setze den Z-Index auf einen Wert größer als den Z-Index der Chat-Nachrichten */
+      }
+
+      .menu-buttons.show {
+        opacity: 1;
+      }
+
+      .menu-buttons.show {
+        opacity: 1;
+      }
+
+      .menu-button {
+        width: 50px;
+        height: 50px;
+        background-color: #25d366;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+        transition: transform 0.3s ease-in-out;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 8333;
+      }
+
+      .menu-button:hover {
+        transform: scale(1.1);
+      }
+
+      .close {
+        content: "x";
+        font-size: 50px;
+        color: #fff;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+      }
+
+      .menu i {
+        font-size: 34px; /* Hier die gewünschte Größe eintragen */
+      }
+
+      #logout-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 9999;
+        /* display: flex; */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #closelogoutbtn {
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: #25d366;
+        border: none;
+        border-radius: 5px;
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+        cursor: pointer;
+        height: auto;
+        width: 40%;
+      }
+
+      #logout-button {
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        height: 10%;
+        width: 50%;
+      }
+    </style>
+  </head> 
+  <body>
+    <main id="main">
+      <div class="chat-box">
+        <div class="chat-header">
+          <h5>TeleTalk</h5>
+          <div id="menuToggler" class="menu" onclick="toggleMenu()">
+            <i class="fas fa-cog"></i>
+          </div>
+          <div class="menu-buttons">
+            <button id="settings-button" class="menu-button">
+              <i class="fas fa-cog"></i>
+            </button>
+            <button id="settings-button2" class="menu-button">
+              <i class="fas fa-info-circle"></i>
+            </button>
+          </div>
+          <div class="topright">
+            <div class="headertext" id="show-username"></div>
+          </div>
+        </div>
+        <div id="chat-main" class="chat-body">
+          <!-- <div class="message sent">
+                <p class="sender-name">John Doe</p>
+                <p>Hi there!</p>
+                <span class="timestamp">08:32</span>
+              </div>
+              
+              <div class="message received">
+                <p class="sender-name">Jane Doe</p>
+                <p>Hello! Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid commodi dicta necessitatibus eius doloremque laborum assumenda dolores fuga, minus, id quae enim sit accusantium corrupti? Quis quae ullam inventore quas ipsam reprehenderit excepturi nobis omnis eius quidem ex nostrum blanditiis nulla qui et, laboriosam illum ipsa dolore aliquam voluptates cum. Consectetur veritatis necessitatibus consequuntur porro, harum doloremque eveniet perspiciatis dolorem perferendis sit repudiandae suscipit enim assumenda nisi officiis voluptas tenetur error vitae. Labore error reprehenderit sed sint nihil. Expedita voluptatibus in enim debitis aliquid maxime eum laborum? Iure, labore, quam explicabo quis quas ad nobis nemo hic eos sit pariatur?</p>
+                <span class="timestamp">08:35</span>
+              </div> -->
+          <!-- Weitere Nachrichten hier -->
+        </div>
+
+        <div class="chat-footer">
+          <input
+            id="morsecode"
+            type="text"
+            class="input-message"
+            placeholder="Type your message..."
+            disabled
+          />
+          <button id="send-button" class="send-button">Send</button>
+        </div>
+        <div class="translation-container">
+          <p><strong>Translation:</strong></p>
+          <p id="translation"></p>
+        </div>
+        <div id="morse-code-container" class="morse-code-container">
+          <div class="morse-code-button" onclick="showPopUp()">i</div>
+          <div
+            id="morse-device"
+            class="morse-device"
+            style="touch-action: manipulation"
+          ></div>
+          <div id="clear-it"
+            class="morse-code-button"
+            onclick="clearMorseCode()"
+            title="delete"
+          >
+            C
+          </div>
+        </div>
+      </div>
+
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <p>To write in Morse code, follow these steps:</p>
+          <div class="middle">
+            <div class="list">
+              <ol>
+                <li>
+                  Press the <span class="highlight">space</span> key or <span class="highlight">touch</span> the image shortly to
+                  write a <span class="dot">.</span>. Hold it a little longer to
+                  write a <span class="dash">-</span>.
+                </li>
+                <li>
+                  Settings: Long Press Threshold (ms): controls how many ms you have to
+                  hold down to write a dash. If it is held less
+                  long a dot is written.<br />Pause Threshold (ms): controls how
+                  many ms after releasing the spacebar or leave touch it takes to start a new
+                  character ("/"). (You can change the Thresholds in ms in the settings in the settings).
+                </li>
+                
+                <li>
+                  The other settigns button opens a cheatsheet, where you can find Morse code representations for
+                  letters and numbers.
+                </li>
+                <li>
+                  Reset input with the
+                  <span style="font-size: 24px">©</span> button. Yep, you have
+                  to rewrite everything if you mistype once :)
+                </li>
+              </ol>
+            </div>
+            <p>Press "Submit" to send your Morse code.</p>
+            <h4 class="note">
+              On the right side you can change the thresholds.<br />To set a new
+              character (/) just wait for the pauseThresholds time
+            </h4>
+            <button id="closepopup">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div id="morse-main" class="middle">
+        <div class="morse-input-container">
+          <label for="morsecode">Enter your E-Mail in morsecode.</label><br />
+          <input type="text" id="morsecode" placeholder="Morsecode" disabled />
+          
+        </div> -->
+
+      <!-- <div>
+          <button class="submit-button" onclick="submitForm()">Submit</button>
+        </div> -->
+
+      <p id="error-message" class="error-message"></p>
+      <p id="s-message" class="s-message"></p>
+      <!-- </div> -->
+
+      <div id="logout-container">
+        <button id="logout-button" onclick="logout()">Logout</button>
+        <button id="closelogoutbtn">close</button>
+      </div>
+
+      <div id="setting-over-container">
+        <div id="settings-main-container">
+          <!-- <div id="settings-button">Settings</div> -->
+          <div id="settings-container">
+            <div class="options-container">
+              <label for="longPressThreshold">Long Press Threshold (ms):</label>
+              <input
+                type="number"
+                id="longPressThreshold"
+                min="0"
+                step="50"
+                value="150"
+              />
+              <button onclick="updateLongPressThreshold()">Apply</button><br />
+              <label for="pauseThreshold">Pause Threshold (ms):</label>
+              <input
+                type="number"
+                id="pauseThreshold"
+                min="0"
+                step="50"
+                value="300"
+              />
+              <button onclick="updatePauseThreshold()">Apply</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="settings-main-container2">
+          <!-- <div id="settings-button2">Cheat Sheet</div> -->
+          <div id="settings-container2">
+            <div class="info-field">
+              <div id="close" class="close">x</div>
+              <h5 class="header">Morse Code Legend</h5>
+              <table class="table">
+                <tr>
+                  <th>Character</th>
+                  <th>Morse Code</th>
+                </tr>
+                <tr>
+                  <td>SPACE</td>
+                  <td>.......</td>
+                </tr>
+                <tr>
+                  <td>Clear</td>
+                  <td>ⓒ</td>
+                </tr>
+
+                <tr>
+                  <td>.</td>
+                  <td>.-.-.-</td>
+                </tr>
+                <tr>
+                  <td>,</td>
+                  <td>--..--</td>
+                </tr>
+                <tr>
+                  <td>?</td>
+                  <td>..--..</td>
+                </tr>
+                <tr>
+                  <td>!</td>
+                  <td>-.-.--</td>
+                </tr>
+                <tr>
+                  <td>-</td>
+                  <td>-....-</td>
+                </tr>
+                <tr>
+                  <td>/</td>
+                  <td>-..-.</td>
+                </tr>
+                <tr>
+                  <td>@</td>
+                  <td>.--.-.</td>
+                </tr>
+                <tr>
+                  <td>(</td>
+                  <td>-.--.</td>
+                </tr>
+                <tr>
+                  <td>)</td>
+                  <td>-.--.-</td>
+                </tr>
+                <tr>
+                  <td>A</td>
+                  <td>.-</td>
+                </tr>
+                <tr>
+                  <td>B</td>
+                  <td>-...</td>
+                </tr>
+                <tr>
+                  <td>C</td>
+                  <td>-.-.</td>
+                </tr>
+                <tr>
+                  <td>D</td>
+                  <td>-..</td>
+                </tr>
+                <tr>
+                  <td>E</td>
+                  <td>.</td>
+                </tr>
+                <tr>
+                  <td>F</td>
+                  <td>..-.</td>
+                </tr>
+                <tr>
+                  <td>G</td>
+                  <td>--.</td>
+                </tr>
+                <tr>
+                  <td>H</td>
+                  <td>....</td>
+                </tr>
+                <tr>
+                  <td>I</td>
+                  <td>..</td>
+                </tr>
+                <tr>
+                  <td>J</td>
+                  <td>.---</td>
+                </tr>
+                <tr>
+                  <td>K</td>
+                  <td>-.-</td>
+                </tr>
+                <tr>
+                  <td>L</td>
+                  <td>.-..</td>
+                </tr>
+                <tr>
+                  <td>M</td>
+                  <td>--</td>
+                </tr>
+                <tr>
+                  <td>N</td>
+                  <td>-.</td>
+                </tr>
+                <tr>
+                  <td>O</td>
+                  <td>---</td>
+                </tr>
+                <tr>
+                  <td>P</td>
+                  <td>.--.</td>
+                </tr>
+                <tr>
+                  <td>Q</td>
+                  <td>--.-</td>
+                </tr>
+                <tr>
+                  <td>R</td>
+                  <td>.-.</td>
+                </tr>
+                <tr>
+                  <td>S</td>
+                  <td>...</td>
+                </tr>
+                <tr>
+                  <td>T</td>
+                  <td>-</td>
+                </tr>
+                <tr>
+                  <td>U</td>
+                  <td>..-</td>
+                </tr>
+                <tr>
+                  <td>V</td>
+                  <td>...-</td>
+                </tr>
+                <tr>
+                  <td>W</td>
+                  <td>.--</td>
+                </tr>
+                <tr>
+                  <td>X</td>
+                  <td>-..-</td>
+                </tr>
+                <tr>
+                  <td>Y</td>
+                  <td>-.--</td>
+                </tr>
+                <tr>
+                  <td>Z</td>
+                  <td>--..</td>
+                </tr>
+                <tr>
+                  <td>0</td>
+                  <td>-----</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>.----</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>..---</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>...--</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>....-</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>.....</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>-....</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>--...</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>---..</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>----.</td>
+                </tr>
+                <tr>
+                  <td>Source</td>
+                  <td>
+                    <a
+                      href="https://de.wikipedia.org/wiki/Morsecode"
+                      target="_blank"
+                      ><button>Wikipedia</button></a
+                    >
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+      let morseCode = "";
+      let dotSound = new Audio("audio/dot.mp3");
+      let dashSound = new Audio("audio/dash.mp3");
+      let morseDevice = document.querySelector(".morse-device");
+      let longPressThreshold = 150;
+      let pauseThreshold = 300;
+
+      let pressing = false;
+      let pressingStartTime;
+
+      const morseCodeMap = {
+        ".......": " ",
+        ".-": "A",
+        "-...": "B",
+        "-.-.": "C",
+        "-..": "D",
+        ".": "E",
+        "..-.": "F",
+        "--.": "G",
+        "....": "H",
+        "..": "I",
+        ".---": "J",
+        "-.-": "K",
+        ".-..": "L",
+        "--": "M",
+        "-.": "N",
+        "---": "O",
+        ".--.": "P",
+        "--.-": "Q",
+        ".-.": "R",
+        "...": "S",
+        "-": "T",
+        "..-": "U",
+        "...-": "V",
+        ".--": "W",
+        "-..-": "X",
+        "-.--": "Y",
+        "--..": "Z",
+        ".----": "1",
+        "..---": "2",
+        "...--": "3",
+        "....-": "4",
+        ".....": "5",
+        "-....": "6",
+        "--...": "7",
+        "---..": "8",
+        "----.": "9",
+        "-----": "0",
+        ".-.-.-": ".",
+        "--..--": ",",
+        "..--..": "?",
+        "-.-.--": "!",
+        "-....-": "-",
+        "-..-.": "/",
+        ".--.-.": "@",
+        "-.--.": "(",
+        "-.--.-": ")",
+        " ": " ",
+      };
+
+      function addSpace() {
+        morseCode += " / ";
+        updateMorseCodeInput();
+        translateMorseCode();
+      }
+
+      function updateMorseCodeInput() {
+        const morseCodeInput = document.getElementById("morsecode");
+        morseCodeInput.value = morseCode;
+      }
+
+      function clearMorseCode() {
+        morseCode = "";
+        updateMorseCodeInput();
+        translateMorseCode();
+      }
+
+      function startMorseCode() {
+        if (!pressing) {
+          pressing = true;
+          pressingStartTime = Date.now();
+        }
+      }
+
+      function stopMorseCode() {
+        if (pressing) {
+          let pressDuration = Date.now() - pressingStartTime;
+          console.log("pressDuration:", pressDuration);
+
+          if (pressDuration >= longPressThreshold) {
+            morseCode += "-";
+            dashSound.play();
+          } else {
+            morseCode += ".";
+            dotSound.play();
+          }
+          updateMorseCode();
+          toggleMorseDevice();
+          pressing = false;
+        }
+      }
+      function updateLongPressThreshold() {
+        let thresholdInput = document.getElementById("longPressThreshold");
+        longPressThreshold = parseInt(thresholdInput.value);
+      }
+
+      function updatePauseThreshold() {
+        var pauseThresholdInput = document.getElementById("pauseThreshold");
+        pauseThreshold = parseInt(pauseThresholdInput.value);
+        clearTimeout(spaceTimeout);
+      }
+
+      function updateMorseCode() {
+        let inputField = document.getElementById("morsecode");
+        inputField.value = morseCode;
+        translateMorseCode();
+      }
+
+      function clearMorseCode() {
+        morseCode = "";
+        updateMorseCode();
+      }
+
+      function toggleMorseDevice() {
+        morseDevice.classList.add("morse-device-on");
+        setTimeout(function () {
+          morseDevice.classList.remove("morse-device-on");
+        }, 100);
+      }
+
+      var keydownTimeout;
+      var lastKeyUpTime = 0;
+      var spacePressed = false;
+      var spaceTimeout;
+
+      document.addEventListener("keydown", function (event) {
+        clearTimeout(keydownTimeout);
+        if (event.code === "Space") {
+          event.preventDefault();
+          startMorseCode();
+          spacePressed = true;
+          clearTimeout(spaceTimeout);
+        }
+      });
+
+      document.addEventListener("keyup", function (event) {
+        if (event.code === "Space") {
+          event.preventDefault();
+          stopMorseCode();
+          spacePressed = false;
+          lastKeyUpTime = new Date().getTime();
+          spaceTimeout = setTimeout(maybePause, pauseThreshold);
+        }
+      });
+
+      morseDevice.addEventListener("touchstart", function (event) {
+        event.preventDefault();
+        startMorseCode();
+        spacePressed = true;
+        clearTimeout(spaceTimeout);
+      });
+
+      morseDevice.addEventListener("touchend", function (event) {
+        event.preventDefault();
+        stopMorseCode();
+        spacePressed = false;
+        lastKeyUpTime = new Date().getTime();
+        spaceTimeout = setTimeout(maybePause, pauseThreshold);
+      });
+
+      function maybePause() {
+        var currentTime = new Date().getTime();
+        var timeSinceLastKeyUp = currentTime - lastKeyUpTime;
+        if (!spacePressed && timeSinceLastKeyUp >= pauseThreshold) {
+          addSpace();
+        }
+      }
+
+      function translateMorseCode() {
+        const translation = document.getElementById("translation");
+        const words = morseCode.split(" / ");
+        const translationText = words
+          .map((word) =>
+            word
+              .split(" ")
+              .map((code) => {
+                if (code === ".......") {
+                  return " ";
+                } else {
+                  return morseCodeMap[code] || "";
+                }
+              })
+              .join("")
+          )
+          .join("");
+        translation.textContent = translationText;
+      }
+
+      function submitForm() {
+        const translation = document
+          .getElementById("translation")
+          .textContent.trim();
+        if (translation === "") {
+          document.getElementById("error-message").textContent =
+            "Error (ID=420): No text input. Please use the intuitive input system to enter your email address.";
+        } else {
+          if (translation.includes("@")) {
+            document.getElementById("error-message").textContent =
+              "Thanks for your wasted time";
+            redirect();
+          } else {
+            document.getElementById("error-message").textContent =
+              "Error (ID=69): No valid email address.";
+          }
+        }
+      }
+
+      function redirect() {
+        setTimeout(function () {
+          window.location.href = "https://youtu.be/xvFZjo5PgG0";
+        }, 1);
+      }
+
+      pressingTime = null;
+
+      const settingsContainer = document.getElementById("settings-container");
+      const settingsButton = document.getElementById("settings-button");
+
+      settingsButton.addEventListener("click", function () {
+        if (settingsContainer.style.right === "0px") {
+          settingsContainer.style.right = "-400px";
+        } else {
+          settingsContainer.style.right = "0px";
+        }
+      });
+
+      settingsButton.dispatchEvent(new Event("click"));
+      settingsContainer.style.right = "-400px";
+
+      const settingsContainer2 = document.getElementById("settings-container2");
+      const settingsButton2 = document.getElementById("settings-button2");
+
+      settingsButton2.addEventListener("click", function () {
+        if (settingsContainer2.style.left === "0px") {
+          settingsContainer2.style.left = "-400px";
+        } else {
+          settingsContainer2.style.left = "0px";
+        }
+      });
+
+      settingsButton2.dispatchEvent(new Event("click"));
+      settingsContainer2.style.left = "-400px";
+
+      const popUp = document.getElementById("popup");
+      const closeButton = document.getElementById("closepopup");
+
+      function showPopUp() {
+        popUp.style.display = "block";
+      }
+
+      closeButton.addEventListener("click", function () {
+        popUp.style.display = "none";
+      });
+
+      const showUsername = document.getElementById("show-username");
+      const currentUser = localStorage.getItem("username");
+
+      if (currentUser) {
+        showUsername.innerHTML = `<div class="greendot"></div><p id="show-username">${currentUser}</p>`;
+      }
+
+      const logoutContainer = document.getElementById("logout-container");
+      const logoutBtn = document.getElementById("logout-button");
+      const closeLogoutBtn = document.getElementById("closelogoutbtn");
+      showUsername.addEventListener("click", function () {
+        logoutContainer.style.display = "flex";
+      });
+
+      closeLogoutBtn.addEventListener("click", function () {
+        logoutContainer.style.display = "none";
+      });
+
+      logoutBtn.addEventListener("click", function () {
+        localStorage.removeItem("username");
+        window.location.href = "index.html";
+      });
+
+      function toggleMenu() {
+        const menuButtons = document.querySelector(".menu-buttons");
+        menuButtons.classList.toggle("show");
+      }
+
+      const closeBtn = document.getElementById("close");
+
+      closeBtn.addEventListener("click", () => {
+        settingsContainer2.style.left = "-400px";
+      });
+
+      // Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyA-tilEQgywgU_SUrOFA8fO6c-uxlzv86o",
+        authDomain: "teletalk-917a9.firebaseapp.com",
+        databaseURL:
+          "https://teletalk-917a9-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "teletalk-917a9",
+        storageBucket: "teletalk-917a9.appspot.com",
+        messagingSenderId: "633282111310",
+        appId: "1:633282111310:web:ada56cfd439ba912cd601f",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const questionContainer = document.getElementById("question-container");
+      const questionContainer2 = document.getElementById("question-container2");
+      const logo = document.getElementById("logo");
+
+      // Firebase Database reference
+      var database = firebase.database();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const sendButton = document.getElementById("send-button");
+
+        sendButton.addEventListener("click", function () {
+          const translation = document
+          .getElementById("translation")
+          .textContent.trim();
+        if (translation === "") {
+          alert("Bitte gib eine Nachricht ein.");
+        } else {
+          // Nachrichten-Count erhöhen
+          var chatCountRef = database.ref("ChatCount");
+          chatCountRef.transaction(
+            function (currentCount) {
+              return (currentCount || 0) + 1;
+            },
+            function (error, committed, snapshot) {
+              if (error) {
+                console.error("Transaktion fehlgeschlagen:", error);
+              } else if (!committed) {
+                console.warn("Transaktion abgebrochen.");
+              } else {
+                // Erfolgreiche Transaktion
+                var currentCount = snapshot.val();
+                var chatRef = database.ref("Chat/" + currentCount);
+
+                // Daten für die Nachricht
+                var currentUser = localStorage.getItem("username");
+                var translation = document
+                  .getElementById("translation")
+                  .textContent.trim();
+                  var currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // Daten in die Realtime Database schreiben
+                chatRef.set({
+                  Number: currentCount,
+                  Name: currentUser,
+                  Nachricht: translation,
+                  Uhrzeit: currentTime,
+                });
+
+                clearMorseCode();
+              }
+            }
+          );
+        }
+          
+        });
+
+        // Referenz auf die Nachrichten in der Realtime Database
+        var chatRef = database.ref("Chat");
+
+        
+
+        // Event-Listener für Änderungen an den Nachrichten
+        chatRef.on("child_added", function (snapshot) {
+          var messageData = snapshot.val();
+          var currentUser = localStorage.getItem("username");
+
+          // Überprüfen, ob die Nachricht eigene oder fremde ist
+          var isOwnMessage = messageData.Name === currentUser;
+
+          // Nachrichten-Container auswählen
+          var chatBody = document.querySelector(".chat-body");
+
+          // Nachrichten-Element erstellen
+          var messageElement = document.createElement("div");
+          messageElement.classList.add("message");
+
+          // Entscheiden, ob es eine eigene oder fremde Nachricht ist
+          if (isOwnMessage) {
+            messageElement.classList.add("sent");
+          } else {
+            messageElement.classList.add("received");
+          }
+
+          // Sendername hinzufügen
+          var senderNameElement = document.createElement("p");
+          senderNameElement.classList.add("sender-name");
+          senderNameElement.textContent = messageData.Name;
+          messageElement.appendChild(senderNameElement);
+
+          // Nachrichtentext hinzufügen
+          var messageTextElement = document.createElement("p");
+          messageTextElement.textContent = messageData.Nachricht;
+          messageElement.appendChild(messageTextElement);
+
+          // Zeitstempel hinzufügen
+          var timestampElement = document.createElement("span");
+          timestampElement.classList.add("timestamp");
+          timestampElement.textContent = messageData.Uhrzeit;
+          messageElement.appendChild(timestampElement);
+
+          // Nachrichten-Element zum Chat-Body hinzufügen
+          chatBody.appendChild(messageElement);
+
+          setTimeout(function() {
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, 200);
+      });
+        });
+
+        
+
+
+      let tutorial = localStorage.getItem("tutorial");
+
+// Überprüfe, ob tutorial einen Wert hat und ob dieser Wert 'true' als Zeichenkette ist
+if (tutorial && tutorial === 'true') {
+  console.log("Tutorial schon angezeigt");
+} else {
+  showTutorial();
+}
+      
+function showTutorial() {
+  const driver = window.driver.js.driver;
+
+
+  const driverObj = driver({
+    overlayColor: 'black',
+  animate: true,
+  showProgress: true,
+  // onDestroyStarted is called when the user tries to exit the tour
+  onDestroyStarted: () => {
+    if (!driverObj.hasNextStep() || confirm("Tutorial überspringen? (nicht empfohlen!)")) {
+      driverObj.destroy();
+    }
+  },
+  showButtons: ['next', 'previous', 'close'],
+  steps: [
+  { popover: { title: 'TeleTalk', description: 'This is a short tutorial on how to use Teletalk.' } },
+    { element: '#chat-main', popover: { title: 'Chat', description: 'This is the chat window. Selfexplanatory.', side: "bottom", align: 'start' }},
+    { element: '#morse-code-container', popover: { title: 'How to write', description: 'Use the morse device to write whatever you want. Click on the "i" symbol to learn more about how the morse code system works. ', side: "bottom", align: 'start' }},
+    { element: '#clear-it', popover: { title: 'Clear', description: 'Here you can clear the current input if you misspelled something.', side: "top", align: 'start' }},
+    { element: '#translation-container', popover: { title: 'Translation', description: 'Here you can see in realtime what your morse code translates to.', side: "top", align: 'start' }},
+    { element: '#send-button', popover: { title: 'Send message', description: 'Here you can send your message. ', side: "top", align: 'start' }},
+    { element: '#menuToggler', popover: { title: 'Menu', description: 'Klick here to open 2 Buttons, one for settings and one with a cheatsheet for morse codes.', side: "top", align: 'start' }},
+    { element: '#show-username', popover: { title: 'LogOut', description: 'By clicking here you can log out.', side: "top", align: 'start' }},
+  ]
+});
+      
+driverObj.drive();
+localStorage.setItem('tutorial', true);
+}
+
+// localStorage.removeItem('tutorial', true);
+
+if (!currentUser) {
+  window.location.href = "index.html";
+}
+    </script>
+  </body>
+</html>

@@ -713,9 +713,9 @@ function calculateTimeDifference(lastSeen) {
   if (minutesDifference < 2) {
     return 'Online';
   } else if (minutesDifference < 5) {
-    return '5 Minuten';
+    return '<_5minutes_ago';
   } else if (minutesDifference < 60) {
-    return minutesDifference + 'Minuten';
+    return minutesDifference + '_minutes_ago';
   } else {
     return 'Offline';
   }

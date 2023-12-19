@@ -342,6 +342,7 @@ footer {
     const questionContainer2 = document.getElementById('question-container2');
     const loginContainer = document.getElementById('login-container');
     const logo = document.getElementById('logo');
+    const feedbackContainer = document.getElementById('feedback-container');
 
     // Firebase Database reference
     var database = firebase.database();
@@ -378,6 +379,7 @@ function checkUsernameExistence(username, callback) {
     function showNextQuestion() {
       questionContainer.style.display = 'none';
       questionContainer2.style.display = 'block';
+
     }
 
     function submitPassword() {
@@ -437,6 +439,7 @@ function checkUsernameExistence(username, callback) {
     function showLogIn() {
       questionContainer.style.display = 'none';
       loginContainer.style.display = 'flex';
+      feedbackContainer.style.display = 'none';
     }
 
     const usernameInput = document.getElementById('usernameLogin');

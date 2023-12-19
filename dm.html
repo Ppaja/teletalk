@@ -28,7 +28,7 @@
     <main id="main">
       <div class="chat-box">
         <div class="chat-header">
-          <h5>TeleTalk</h5>
+          <h5 ><span id="status-indicator"></span><span id="header-title"></span></h5>
           <div class="lefttop-container">
           <button id="menu-button" class="menu">
               <i class="fas fa-bars" style="color: white;"></i>
@@ -597,7 +597,77 @@ function openDmChat (chatPartner) {
   localStorage.setItem("chatPartner", chatPartner);
   window.location.href = "dm.html";
 }
+
+const headerTitle = document.getElementById("header-title");
+const statusIndicator = document.getElementById("status-indicator");
       
+headerTitle.innerHTML = chatPartner;
+
+function displayChatPartnerStatus(chatPartner) {
+  const chatPartnerPath = `Users/Online/${chatPartner}`;
+  
+
+  if (!statusIndicator) {
+    console.error("Element mit ID 'status-indicator' nicht gefunden.");
+    return;
+  }
+
+  firebase.database().ref(chatPartnerPath).once('value')
+    .then(snapshot => {
+      const lastSeen = snapshot.val()?.lastseen;
+
+      if (lastSeen) {
+        const lastSeenTime = new Date(lastSeen);
+        const currentTime = new Date();
+        const timeDifference = currentTime - lastSeenTime;
+
+        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
+        if (minutesDifference < 1) {
+          statusIndicator.textContent  = "🟢";
+        } else {
+          statusIndicator.textContent  = "🔴";
+        }
+      } else {
+        // Wenn kein lastSeen-Wert vorhanden ist, gehe davon aus, dass der Benutzer offline ist
+        statusIndicator.textContent  = "🔴";
+      }
+    })
+    .catch(error => {
+      console.error("Fehler beim Abrufen des Chat-Partner-Status:", error);
+    });
+}
+
+// Funktion für die Aktualisierung des Chat-Partner-Status
+function updateChatPartnerStatus() {
+  displayChatPartnerStatus(chatPartner);
+}
+
+// Rufe die Funktion sofort auf, um den Status beim Laden der Seite anzuzeigen
+updateChatPartnerStatus();
+
+// Aktualisiere den Chat-Partner-Status alle 60 Sekunden
+setInterval(updateChatPartnerStatus, 60000);
+
+
+let userPath = `Users/Online/${currentUser}`;
+
+function updateLastSeenInFirebase() {
+  const currentDate = new Date().toISOString();
+  firebase.database().ref('Users/Online').once('value')
+    .then(snapshot => {
+      const onlineUsers = snapshot.val();
+    });
+
+  firebase.database().ref(userPath).update({
+    lastseen: currentDate
+  });
+}
+
+setInterval(updateLastSeenInFirebase, 60000);
+
+updateLastSeenInFirebase();
+
       </script>
   </body>
 </html>

@@ -271,6 +271,16 @@ function showTutorial() {
         },
       },
       {
+        element: "#online-users-btn",
+        popover: {
+          title: "Users online",
+          description:
+            "Here you can see who is online.",
+          side: "top",
+          align: "start",
+        },
+      },
+      {
         element: "#menuToggler",
         popover: {
           title: "Menu",

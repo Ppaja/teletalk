@@ -23,7 +23,7 @@
 
     <style>
       #online-users-container {
-        background-color: aliceblue;
+        background-color: rgb(192, 192, 192);
         position: fixed;
         top: 0;
         left: 0;
@@ -48,6 +48,7 @@
 
       #listofusers {
 display: flex;
+flex-direction: column;
 justify-content: center;
 
       }
@@ -73,6 +74,7 @@ justify-content: center;
 .online-indicator {
   margin-left: 10px;
   font-size: 15px;
+  color: black;
 }
 
 .online-indicator.online {
@@ -711,13 +713,15 @@ function calculateTimeDifference(lastSeen) {
   if (minutesDifference < 2) {
     return 'Online';
   } else if (minutesDifference < 5) {
-    return `< 5 Minuten`;
+    return '5 Minuten';
   } else if (minutesDifference < 60) {
-    return `< ${minutesDifference} Minuten`;
+    return minutesDifference + 'Minuten';
   } else {
-    return `Offline (${Math.floor(minutesDifference / 60)}h ago)`;
+    return 'Offline';
   }
 }
+
+
 
 function displayOnlineUsers(users) {
   listOfUsers.innerHTML = '';

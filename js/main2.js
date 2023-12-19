@@ -169,10 +169,15 @@ var firebaseConfig = {
       var chatRef = database.ref(`AllChats/${dmName}/Chat`);
   
   
-      
+      chatRef.once("value", function(snapshot) {
+        if (!snapshot.exists()) {
+          stopLoadingAnimation();
+        }
+      });
   
       // Event-Listener für Änderungen an den Nachrichten
       chatRef.on("child_added", function (snapshot) {
+        
         var messageData = snapshot.val();
         var currentUser = localStorage.getItem("username");
   
@@ -216,6 +221,7 @@ var firebaseConfig = {
         setTimeout(function() {
   chatBody.scrollTop = chatBody.scrollHeight;
   }, 200);
+  stopLoadingAnimation ();
     });
       };
   

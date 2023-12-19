@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login/Register</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,7 +13,7 @@
       background-color: #333333;
       color: white;
       display: flex;
-      align-items: center;
+      /* align-items: center; */
       justify-content: center;
       height: 100vh;
       overflow: hidden;
@@ -20,6 +21,9 @@
 
     .animation-container {
       text-align: center;
+      display: block;
+      position: relative;
+      top: 10%;
     }
 
     .logo {
@@ -29,26 +33,7 @@
       animation: fadeIn 1s ease-in-out forwards, pulse 2s 1s infinite forwards;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.05);
-      }
-      100% {
-        transform: scale(1);
-      }
-    }
+    
 
     .question-container {
       margin-top: 20px;
@@ -166,9 +151,113 @@
 }
 }
 
+.testimonial-card {
+  
+  border-radius: 10px;
+  padding: 20px;
+  color: #fff;
+  margin: 10px;
+  border: 1px solid #ccc;
+}
+
+.colora {
+  background: linear-gradient(#f4f4f4, rgb(78, 78, 78));
+}
+
+.colorb {
+
+}
+
+.quote {
+  font-size: 2em;
+  font-weight: bold;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+}
+
+.text {
+  line-height: 1.5;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.author {
+  font-size: 14px;
+  font-weight: lighter;
+  margin-top: 15px;
+}
+
+.star-rating {
+  font-size: 1.5em;
+  color: #fff;
+}
+
+.flexrow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* @media only screen and (max-width: 768px) {
+  .testimonial-card {
+    padding: 15px;
+    font-size: 14px;
+  }
+  .quote {
+    font-size: 2em;
+  }
+  .text {
+    line-height: 1.2;
+  }
+  .author {
+    font-size: 12px;
+  }
+  
+} */
+
+footer {
+  position: fixed;
+  bottom: 5%;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  max-height: 40%;
+  opacity: 0;
+  animation: fadeIn 1s 3s ease-in-out forwards;
+
+}
+
+.outgrayed {
+  filter: grayscale(100%);}
+
+
+@keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
   </style>
 </head>
 <body>
+
+  
 
     <div class="animation-container">
         <img id="logo" src="logo.png" alt="Logo" class="logo">
@@ -192,6 +281,44 @@
             <button id="login-btn" class="login-btn" onclick="login()">Login</button>
           </div>
       </div>
+
+      <footer>
+        <div id="feedback-container">
+          <div id="feedback-carusel">
+
+            <div class="testimonial-card">
+              <p class="quote">“</p>
+              <p class="text">Das entschleunigt mal so richtig, genau was ich gebraucht habe!</p>
+                 <div class="flexrow">
+              <p class="author">Nico, user</p>
+              <div class="stars-container"><span class="star-rating fa-star-o">⭐️⭐️⭐️⭐️</span><span class="star-rating outgrayed">⭐️</span></div>
+            </div>
+            </div>
+
+            <div class="testimonial-card">
+              <p class="quote">“</p>
+              <p class="text">Teletalk ist sehr toll wenn man viel Zeit aufwenden möchte.
+                Wenn ich teletalk bewerten müsste, würde ich ihr eine 4/10 geben</p>
+                 <div class="flexrow">
+              <p class="author">Aylin, user</p>
+              <div class="stars-container"><span class="star-rating fa-star-o">⭐️⭐️</span><span class="star-rating outgrayed">⭐️⭐️⭐️</span></div>
+            </div>
+            </div>
+
+            <div class="testimonial-card">
+              <p class="quote">“</p>
+              <p class="text">This website is very amazing! The design is modern and clean, and the information is easy to find. I give it 5/5 stars!</p>
+                 <div class="flexrow">
+              <p class="author">ChatGPT, AI</p>
+              <div class="stars-container"><span class="star-rating fa-star-o">⭐️⭐️⭐️⭐️⭐️</span><span class="star-rating outgrayed"></span></div>
+            </div>
+            </div>
+
+   
+          </div>
+        </div>
+      </footer>
+      
       
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -356,6 +483,29 @@ function checkUsernameExistence(username, callback) {
     }
       
  
+
+    // JavaScript logic for carousel
+let currentIndex = 0;
+const cards = document.querySelectorAll('.testimonial-card');
+
+function showCard(index) {
+  cards.forEach((card, i) => {
+    if (i === index) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function nextCard() {
+  currentIndex = (currentIndex + 1) % cards.length;
+  showCard(currentIndex);
+}
+
+// Start the carousel
+showCard(currentIndex);
+setInterval(nextCard, 7000); // Change card every 7 seconds
   </script>
 </body>
 </html>

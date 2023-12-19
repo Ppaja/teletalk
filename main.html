@@ -6,6 +6,7 @@
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="loader.css">
 
     <link
       rel="stylesheet"
@@ -20,7 +21,68 @@
       href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"
     />
 
-    <style></style>
+    <style>
+      #online-users-container {
+        background-color: aliceblue;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+
+      }
+
+      #close-online-users-btn {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        background-color: transparent;
+        color: #d3d3d3;
+        border: none;
+        font-size: 38px;
+        font-weight: bold;
+
+      }
+
+      #listofusers {
+display: flex;
+justify-content: center;
+
+      }
+
+      .user-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 5px;
+}
+
+.user-card:last-child {
+  border-bottom: none;
+}
+
+.username {
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.online-indicator {
+  margin-left: 10px;
+  font-size: 15px;
+}
+
+.online-indicator.online {
+  color: #4CAF50;
+}
+
+.online-indicator.offline {
+  color: #353535;
+}
+    </style>
   </head>
   <body>
     <main id="main">
@@ -35,6 +97,12 @@
             <div id="menuToggler" class="menu" onclick="toggleMenu()">
               <i class="fas fa-cog"></i>
             </div>
+
+            <div id="online-users-btn" class="menu">
+              <i class="fas fa-users"></i>
+            </div>
+
+  
           </div>
 
           <div class="menu-buttons">
@@ -50,9 +118,9 @@
           <button id="notification-button" class="push-button">
             <i class="fas fa-bell"></i>
           </button>
-          <button id="add-button" class="push-button" onclick="addUser()">
+          <!-- <button id="add-button" class="push-button" onclick="addUser()">
             <i class="fas fa-plus"></i>
-          </button>
+          </button> -->
         </div>
 
         <div id="add-user-container">
@@ -93,7 +161,7 @@
           <button id="send-button" class="send-button">Send</button>
         </div>
         <div class="translation-container">
-          <p><strong>Translation:</strong></p>
+          <p ><strong id="translation-header">Translation:</strong></p>
           <p id="translation"></p>
         </div>
         <div id="morse-code-container" class="morse-code-container">
@@ -111,6 +179,16 @@
           >
             C
           </div>
+
+          <div
+            id="last-char-remove"
+            class="morse-code-button"
+            onclick="removeLastMorseCodeCharacter()"
+            title="delete"
+          >
+            <i class="fas fa-backspace"></i>
+          </div>
+
         </div>
       </div>
 
@@ -163,10 +241,41 @@
         <div class="chat-header">
           <h2>Chat selection:</h2>
         </div>
-        <div class="chat-selection">
+        <div id="globalchattutorial" class="chat-selection">
           <a href="main.html">Global Chat</a>
           <!-- Weitere Chat-Auswahlen hier -->
         </div>
+      </div>
+
+      <div id="loader-container">
+        <div class="honeycomb">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      <div id="online-users-container">
+        <button id="close-online-users-btn">x</button>
+        <div class="chat-header">
+          <h2>Users online:</h2>
+        </div>
+        <div id="listofusers">
+          <!-- Hier werden die Online-Users angezeigt -->
+          <!-- <div class="user-card">
+            <span class="username">User1</span>
+            <span class="online-indicator online">Online</span>
+          </div>
+          <div class="user-card">
+            <span class="username">User2</span>
+            <span class="online-indicator offline">Offline (1h ago)</span>
+          </div> -->
+        </div>
+
       </div>
 
       <p id="error-message" class="error-message"></p>
@@ -430,7 +539,6 @@
     <script src="js/main.js"></script>
     <script>
       const menuBtn = document.getElementById("menu-button");
-      const menuContainer = document.getElementById("menu-container");
 
       menuBtn.addEventListener("click", () => {
         menuContainer.style.display = "block";
@@ -575,6 +683,88 @@ function openDmChat (chatPartner) {
   window.location.href = "dm.html";
 }
       
+
+const onlineUsersBtn = document.getElementById("online-users-btn");
+const onlineUsersContainer = document.getElementById("online-users-container");
+const closeOnlineBtn = document.getElementById("close-online-users-btn");
+
+onlineUsersBtn.addEventListener("click", () => {
+  onlineUsersContainer.style.display = "block";
+});
+
+closeOnlineBtn.addEventListener("click", () => {
+  onlineUsersContainer.style.display = "none";
+});
+
+
+let userPath = `Users/Online/${currentUser}`;
+const listOfUsers = document.getElementById("listofusers");
+
+
+function calculateTimeDifference(lastSeen) {
+  const lastSeenTime = new Date(lastSeen);
+  const currentTime = new Date();
+  const timeDifference = currentTime - lastSeenTime;
+
+  const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+
+  if (minutesDifference < 2) {
+    return 'Online';
+  } else if (minutesDifference < 5) {
+    return `< 5 Minuten`;
+  } else if (minutesDifference < 60) {
+    return `< ${minutesDifference} Minuten`;
+  } else {
+    return `Offline (${Math.floor(minutesDifference / 60)}h ago)`;
+  }
+}
+
+function displayOnlineUsers(users) {
+  listOfUsers.innerHTML = '';
+
+  for (const userId in users) {
+    const userData = users[userId];
+    const userLastSeen = userData.lastseen;
+    const userStatus = calculateTimeDifference(userLastSeen);
+
+    const userCard = document.createElement('div');
+    userCard.classList.add('user-card');
+    
+    const usernameElement = document.createElement('span');
+    usernameElement.classList.add('username');
+    usernameElement.textContent = userId;
+
+    const onlineIndicator = document.createElement('span');
+    onlineIndicator.classList.add('online-indicator');
+    onlineIndicator.textContent = userStatus;
+    onlineIndicator.classList.add(userStatus.toLowerCase());
+
+    userCard.appendChild(usernameElement);
+    userCard.appendChild(onlineIndicator);
+
+    listOfUsers.appendChild(userCard);
+  }
+}
+
+function updateLastSeenInFirebase() {
+  const currentDate = new Date().toISOString();
+  firebase.database().ref('Users/Online').once('value')
+    .then(snapshot => {
+      const onlineUsers = snapshot.val();
+      displayOnlineUsers(onlineUsers);
+    });
+
+  firebase.database().ref(userPath).update({
+    lastseen: currentDate
+  });
+}
+
+setInterval(updateLastSeenInFirebase, 60000);
+
+updateLastSeenInFirebase();
+
+
+
       </script>
   </body>
 </html>

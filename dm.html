@@ -6,6 +6,8 @@
     <!-- my styles -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="loader.css">
+
 
     <link
       rel="stylesheet"
@@ -50,9 +52,9 @@
           <button id="notification-button" class="push-button">
             <i class="fas fa-bell"></i>
           </button>
-          <button id="add-button" class="push-button" onclick="addUser()">
+          <!-- <button id="add-button" class="push-button" onclick="addUser()">
             <i class="fas fa-plus"></i>
-          </button>
+          </button> -->
         </div>
 
         <div id="add-user-container">
@@ -80,6 +82,18 @@
                 <span class="timestamp">08:35</span>
               </div> -->
           <!-- Weitere Nachrichten hier -->
+        </div>
+
+        <div id="loader-container">
+          <div class="honeycomb">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
 
         <div class="chat-footer">
@@ -110,6 +124,14 @@
             title="delete"
           >
             C
+          </div>
+          <div
+            id="last-char-remove"
+            class="morse-code-button"
+            onclick="removeLastMorseCodeCharacter()"
+            title="delete"
+          >
+            <i class="fas fa-backspace"></i>
           </div>
         </div>
       </div>

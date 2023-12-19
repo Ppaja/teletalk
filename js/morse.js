@@ -1,6 +1,15 @@
+var img1 = new Image();
+var img2 = new Image();
+img1.src = "../img/morse_device_off.png";
+img2.src = "../img/morse_device_on.png";
+
 let morseCode = "";
-      let dotSound = new Audio("audio/dot.mp3");
-      let dashSound = new Audio("audio/dash.mp3");
+let dotSound = new Audio("audio/dot.mp3");
+let dashSound = new Audio("audio/dash.mp3");
+
+// Preloading der Sounds
+dotSound.preload = "auto";
+dashSound.preload = "auto";
       let morseDevice = document.querySelector(".morse-device");
       let longPressThreshold = 150;
       let pauseThreshold = 600;
@@ -222,3 +231,34 @@ let morseCode = "";
       }
 
       pressingTime = null;
+
+
+      function removeLastMorseCodeCharacter() {
+        const morseCodeLength = morseCode.length;
+        if (morseCodeLength > 0) {
+          const lastSeparatorIndex = morseCode.lastIndexOf(" / ");
+          if (lastSeparatorIndex !== -1) {
+            const secondLastSeparatorIndex = morseCode.lastIndexOf(" / ", lastSeparatorIndex - 1);
+            if (secondLastSeparatorIndex !== -1) {
+              // Remove everything after the second-last separator
+              morseCode = morseCode.substring(0, secondLastSeparatorIndex + 3); // +3 to keep the second-last separator and space
+            } else {
+              // Remove only the last separator and character
+              morseCode = morseCode.substring(0, lastSeparatorIndex);
+            }
+          } else {
+            // No separators found, simply remove the last character
+            morseCode = morseCode.substring(0, morseCodeLength - 1);
+          }
+          updateMorseCodeInput();
+          translateMorseCode();
+        }
+      }
+
+
+      // loading animation stuff
+      const loaderContainer = document.getElementById("loader-container");
+
+      function stopLoadingAnimation () {
+        loaderContainer.style.display = "none";
+      }

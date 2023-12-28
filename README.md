@@ -1,16 +1,19 @@
 # TeleTalk - The Morse Code Chat Platform
 
+[![TeleTalk](ghlogo.png)](https://teletalkdev.netlify.app/)
+
+
 ## Introduction
 
 Welcome to TeleTalk, a revolutionary chat platform that brings a unique twist to digital communication. Say goodbye to the conventional typing and embrace the world of Morse code! TeleTalk is not just a chat app; it's a new way to connect, combining the simplicity of Morse code with modern chat functionalities.
 
 ## Features
 
-- **Morse Code Input System:** At the heart of TeleTalk is our innovative Morse code input system. This intuitive and user-friendly method makes typing a breeze. Whether you're a Morse code expert or a beginner, you'll find communicating via Morse code surprisingly efficient and fun!
+- **Morse Code Input System:** At the heart of TeleTalk is our innovative Morse code input system. This intuitive and user-friendly method makes typing a breeze. Whether you're a Morse code expert or a beginner, you'll find communicating via Morse code surprisingly efficient and fun! Trust me! Its not even how real morse code works!
 
 - **Global Group Chat:** Connect with people around the world in our global group chat. Share ideas, make new friends, or just have a good time chatting in a unique and engaging way.
 
-- **Unlimited Direct Messages:** Enjoy private conversations with as many users as you like. TeleTalk's direct messaging feature ensures your private chats stay just that - private and secure.
+- **Unlimited Direct Messages:** Enjoy private conversations with as many users as you like. TeleTalk's direct messaging feature ensures your private chats stay just that - private and secure - well, not really secure but what app is really secure right?
 
 ## Getting Started
 
@@ -18,7 +21,7 @@ Access TeleTalk easily by visiting [https://teletalkdev.netlify.app/](https://te
 
 ## User-Friendly Design
 
-TeleTalk prides itself on its user-friendly design. Morse code may seem daunting at first, but you'll soon discover its simplicity and efficiency. The platform is designed to be intuitive, making the transition to Morse code input smooth and straightforward.
+TeleTalk prides itself on its user-friendly design. Morse code may seem daunting at first, but you'll soon discover its daunting. The platform is designed to be intuitive, making the transition to Morse code input smooth and straightforward.
 
 ## Why Morse Code?
 
@@ -34,8 +37,10 @@ If you have any questions, suggestions, or just want to chat, feel free to reach
 
 ## Acknowledgements
 
-Special thanks to everyone who has contributed to making TeleTalk a reality. Your support and feedback have been invaluable.
+Special thanks to me who has contributed to making TeleTalk a reality. My support and feedback is amazing.
 
 ---
 
 TeleTalk - Reimagining communication, one dot and dash at a time.
+
+Hint: this is a fun project and should be treated as that!

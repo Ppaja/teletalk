@@ -1,6 +1,6 @@
 # TeleTalk - The Morse Code Chat Platform
 
-[![TeleTalk](ghlogo.png)](https://teletalkdev.netlify.app/)
+[![TeleTalk](logo.png)](https://teletalkdev.netlify.app/)
 
 
 ## Introduction

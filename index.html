@@ -253,11 +253,38 @@ footer {
         transform: scale(1);
       }
     }
+
+    #info-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .info-text {
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #ff000059;
+    }
+
+    
   </style>
 </head>
 <body>
 
-  
+    <div id="info-container">
+      <div class="info-text">
+        <p>Server has been shut down.</p>
+        <p>The messenger wont work anymore.</p>
+      </div>
+    </div>
 
     <div class="animation-container">
         <img id="logo" src="logo.png" alt="Logo" class="logo">
